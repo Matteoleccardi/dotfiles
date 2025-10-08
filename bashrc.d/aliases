@@ -1,0 +1,5 @@
+# Main commands
+alias c="clear"
+alias la="ls -a"
+
+

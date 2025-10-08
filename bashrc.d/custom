@@ -1,0 +1,40 @@
+###   CUSTOM PROMPT STYLING   ###
+function set_custom_prompt() {
+    # Colors
+    # - Normal colors
+    # https://gist.github.com/JBlond/2fea43a3049b38287e5e9cefc87b2124
+    PURPLEB="\e[1;95m"
+    RED="\e[0;31m"
+    GREEN="\e[0;32m"
+    YELLOW="\e[0;93m"
+    YELLOWB="\e[1;33m"
+    ORANGE="\e[0;38;5;208m"
+    
+    # - Reset Color and Style
+    RESET="\e[0m"
+
+    # format the screen session name
+    screen_session=""
+    if [[ -n "$STY" ]]; then
+        screen_session="${PURPLEB}[${STY##*.}]${RESET} "
+    fi
+    # format conda environment name
+    parse_conda_env_color() {
+        if [ -n "$CONDA_DEFAULT_ENV" ]; then
+            # Format the environment name in green and reset the color afterward
+            echo -n "$GREEN($CONDA_DEFAULT_ENV)$RESET "
+        fi
+    }
+    # format chroot (root jail)
+    chroot_env="${RED}${debian_chroot:+($debian_chroot)}${RESET}"
+    # Variable for the user and host
+    user_host="${YELLOWB}\u${YELLOW}@${YELLOWB}\h${RESET}"
+    # Variable for the current directory
+    current_dir="${ORANGE}\w${RESET}"
+    
+    # -- final prompt -- #
+    PS1="${screen_session}${chroot_env}$(parse_conda_env_color)${user_host}:${current_dir}\n\$ "
+}
+
+export PROMPT_COMMAND="set_custom_prompt"
+
