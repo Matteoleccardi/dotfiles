@@ -1,0 +1,5 @@
+# Tailscale and Headscale
+
+# Chrome
+
+# Miniconda (Python)
