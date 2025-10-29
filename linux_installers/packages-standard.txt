@@ -1,0 +1,9 @@
+# general
+htop
+
+# multimedia
+ffmpeg
+mpv
+
+# Networking
+nmap
