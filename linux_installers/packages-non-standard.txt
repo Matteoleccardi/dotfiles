@@ -3,3 +3,5 @@
 # Chrome
 
 # Miniconda (Python)
+
+# matrix client (neochat, element)
