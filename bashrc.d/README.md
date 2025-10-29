@@ -1,4 +1,4 @@
-# INSTRUUCTIONS
+# How To
 
 Copy-paste these following lines in your bashrc file to import all the files 
 in the `~/.bashrc.d/` folder into the `.bashrc` file.

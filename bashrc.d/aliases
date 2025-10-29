@@ -2,5 +2,10 @@
 alias c="clear"
 alias la="ls -a"
 
+# Neofetch (no longer supported)
+alias neofetch="\
+    echo -e '\e[1;32mneofetch has reached EOL. Use fastfetch instead.\e[0m';\
+    fastfetch"
+
 # Nmap
 alias nmap_lan="nmap -sn -oG - 192.168.1.0/24"

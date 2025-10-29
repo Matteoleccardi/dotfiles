@@ -1,0 +1,12 @@
+# conda
+# | for conda (miniconda3), it is not needed to run anything here.
+# | Just run "/path/to/conda init" once, and it will modify the .bashrc automatically.
+# | Do not move the conda automatic code snippet from .bashrc file to here, 
+# | as upon dis-installation the program will automatically remove the snippet from the .bashrc file.
+
+# 3D Slicer
+# | Created a simlink to ~/.local/bin
+# | $ ln -s /home/mleccardi/.local/share/Slicer-5.8.1-linux-amd64/Slicer ~/.local/bin/Slicer
+
+
+
