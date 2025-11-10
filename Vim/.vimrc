@@ -35,3 +35,6 @@ set nrformats-=octal
 if has('mouse')
   set mouse=a
 endif
+
+set timeoutlen=1000
+set ttimeoutlen=50
