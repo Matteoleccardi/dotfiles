@@ -21,7 +21,6 @@ set wildmenu                   " Great command-line completion, use `<Tab>` to m
                                " around and `<CR>` to validate.
 " turn hybrid line numbers on
 set number
-
 augroup numbertoggle
   autocmd!
   autocmd BufEnter,FocusGained,InsertLeave,WinEnter * if &nu && mode() != "i" | set rnu   | endif
@@ -30,6 +29,8 @@ augroup END
 
 
 set showcmd
+set showmode
+
 set nrformats-=octal
 if has('mouse')
   set mouse=a
