@@ -1,3 +1,3 @@
-! Windows : vimrc ?
-! Mac     :
-! Linux   : $HOME/.vimrc
+" Windows : vimrc ?
+" Mac     :
+" Linux   : $HOME/.vimrc
