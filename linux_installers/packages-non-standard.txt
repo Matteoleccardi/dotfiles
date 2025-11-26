@@ -1,7 +1,10 @@
-# Tailscale and Headscale
+# Tailscale and Headscale (website instructions)
 
 # Chrome
 
-# Miniconda (Python)
+# Miniconda (Python) (website istructions)
 
 # matrix client (neochat, element)
+
+# neovim (aside or instead of vim)
+sudo dnf install -y neovim python3-neovim
