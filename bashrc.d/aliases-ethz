@@ -5,14 +5,11 @@ if [ -d "/opt/cisco/secureclient/" ]; then
     alias vpn-eth-connect="vpn-eth connect sslvpn.ethz.ch/staff-net"
 else
     # Optional: You can uncomment the line below if you want a message
-    echo "Skipping VPN aliases: /opt/cisco/secureclient/ not found."
-    #: # 'no-op' command to keep the else block valid if no message is needed
+    : # 'no-op' command to keep the else block valid if no message is needed
 fi
 
-# Conditional setup for dev machines using 'case'
-# Get the current hostname and convert to lowercase
+# starthcatsegment
 HOST=$(hostname | tr '[:upper:]' '[:lower:]')
-
 case "$HOST" in
     # 1. Substring matches using a pattern with wildcards (*)
     "magnum"|*octopus*|*bmic*|*biwi*)
@@ -22,6 +19,6 @@ case "$HOST" in
 
     # Fallback for all other hostnames
     *)
-        echo "I do not know host $HOST, please add this host in the .bashrc.d/aliases-ethz file"
         ;; # End of default case
 esac
+unset $HOST
