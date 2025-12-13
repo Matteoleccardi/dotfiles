@@ -1,5 +1,6 @@
 # How To
 
+## Setup the .bashrc or .bash_profile file
 Copy-paste these following lines in your bashrc file to import all the files 
 in the `~/.bashrc.d/` folder into the `.bashrc` file.
  
@@ -19,3 +20,10 @@ fi
 unset rc
 ```
 
+## Update the content of .bashrc.d/ folder content
+
+You have to use `curl` to download from GitHub raw content:
+
+```bash
+ curl -O https://raw.githubusercontent.com/Matteoleccardi/dotfiles/refs/heads/main/bashrc.d/{aliases,aliases-ethz,custom,paths,paths-ethz}
+```
