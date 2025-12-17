@@ -22,8 +22,10 @@ function set_custom_prompt() {
     # format conda environment name
     parse_conda_env_color() {
         if [ -n "$CONDA_DEFAULT_ENV" ]; then
+            # ${VAR##*/} removes everything up to the last slash
+            local env_name="${CONDA_DEFAULT_ENV##*/}"
             # Format the environment name in green and reset the color afterward
-            echo -n "$GREEN($CONDA_DEFAULT_ENV)$RESET "
+            echo -n "$GREEN($env_name)$RESET "
         fi
     }
     # format chroot (root jail)
