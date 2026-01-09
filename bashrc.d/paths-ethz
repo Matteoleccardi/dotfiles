@@ -1,1 +1,3 @@
+export ALLSYM="/itet-stor/$USER/"
+export HCATSEGMENTDIR="/scratch_net/magnum/mleccardi/Repos/HCATSegment"
 export DATASETSDIR="/usr/bmicnas02/data-biwi-01/bmicdatasets-originals/Originals"
