@@ -2,7 +2,7 @@
 export ALLSYM="/itet-stor/$USER/"
 
 # Some noteworthy paths
-export BENDERHOME="/usr/benderstor01/data-biwi-01/mleccardi_guest"
+export BENDERHOME="/usr/benderstor01/data-biwi-01/mleccardi_guest/data"
 export DATASETSDIR="/usr/bmicnas02/data-biwi-01/bmicdatasets-originals/Originals"
 export MYDATA="/srv/bluebay/projects/mleccardi_guest/data"
 export MYBACKUPS="$MYDATA/backups"
