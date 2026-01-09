@@ -1,3 +1,11 @@
+# Main, where all links to everywhere are found
 export ALLSYM="/itet-stor/$USER/"
-export HCATSEGMENTDIR="/scratch_net/magnum/mleccardi/Repos/HCATSegment"
+
+# Some noteworthy paths
+export BENDERHOME="/usr/benderstor01/data-biwi-01/mleccardi_guest"
 export DATASETSDIR="/usr/bmicnas02/data-biwi-01/bmicdatasets-originals/Originals"
+export MYDATA="/srv/bluebay/projects/mleccardi_guest/data"
+export MYBACKUPS="$MYDATA/backups"
+
+# Projects/repos/code 
+export HCATSEGMENTDIR="/scratch_net/magnum/mleccardi/Repos/HCATSegment"
