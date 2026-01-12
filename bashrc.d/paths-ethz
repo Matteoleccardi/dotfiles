@@ -3,7 +3,9 @@ export ALLSYM="/itet-stor/$USER/"
 
 # Important paths
 ## main one to use from 2026 on. It is a scratch (no regular backups).
-export BHOME="/usr/benderstor01/data-biwi-01/mleccardi_guest/data" 
+export BENDERSTOR="/usr/benderstor01/data-biwi-01/mleccardi_guest/data"
+export BHOME="$BENDERSTOR/home"
+export BBACKUPS="$BENDERSTOR/backups"
 ## just for original datasets
 export DATASETSDIR="/usr/bmicnas02/data-biwi-01/bmicdatasets-originals/Originals"
 ## another scratch - used for the whole department, has space but very slow
