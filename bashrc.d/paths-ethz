@@ -1,11 +1,16 @@
-# Main, where all links to everywhere are found
+# Where all links to everywhere you have access to are found
 export ALLSYM="/itet-stor/$USER/"
 
-# Some noteworthy paths
-export BENDERHOME="/usr/benderstor01/data-biwi-01/mleccardi_guest/data"
+# Important paths
+## main one to use from 2026 on. It is a scratch (no regular backups).
+export BHOME="/usr/benderstor01/data-biwi-01/mleccardi_guest/data" 
+## just for original datasets
 export DATASETSDIR="/usr/bmicnas02/data-biwi-01/bmicdatasets-originals/Originals"
-export MYDATA="/srv/bluebay/projects/mleccardi_guest/data"
-export MYBACKUPS="$MYDATA/backups"
+## another scratch - used for the whole department, has space but very slow
+export NET_SCRATCH="/usr/itetnas04/data-scratch-01/mleccardi/data"
 
+
+
+# LEGACY - not valid anymore from 2026-01-30
 # Projects/repos/code 
 export HCATSEGMENTDIR="/scratch_net/magnum/mleccardi/Repos/HCATSegment"
