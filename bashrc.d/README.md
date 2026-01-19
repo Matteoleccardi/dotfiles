@@ -6,18 +6,14 @@ in the `~/.bashrc.d/` folder into the `.bashrc` file.
  
 ```bash
 if [ -d ~/.bashrc.d ]; then
-    # Using 'extglob' for pattern matching to exclude files with a dot:
-    shopt -s extglob # Enable extended pattern matching
-    
-    for rc in ~/.bashrc.d/!(*.*); do
-        if [ -f "$rc" ]; then
-            . "$rc"
-        fi
-    done
-    
-    shopt -u extglob # Disable extended pattern matching (optional, but good practice)
+    # Use find to list files that contain NO dots in their filename, printing with a null terminator
+    # This prevents issues with spaces or special characters in filenames
+    while IFS= read -r -d '' rc; do
+        # Source the file in the CURRENT shell context
+        . "$rc"
+    done < <(find ~/.bashrc.d -maxdepth 1 -type f -not -name '*.*' -print0)
 fi
-unset rc
+unset rc # Clean up
 ```
 
 ## Update the content of .bashrc.d/ folder content
