@@ -2,12 +2,16 @@ return {
   "neovim/nvim-lspconfig",
   dependencies = { "williamboman/mason.nvim" },
   config = function()
-    local lspconfig = require("lspconfig")
-    
-    -- Tell Neovim how to activate each server once Mason installs it
+    -- List the exact server tokens managed by Mason
     local servers = { "pyright", "clangd", "ts_ls", "texlab", "bashls" }
-    for _, server in ipairs(servers) do
-      lspconfig[server].setup({})
+
+    for _, server_name do
+      -- 1. vim.lsp.config registers or extends static configurations
+      -- Passing an empty table {} relies entirely on the defaults provided by nvim-lspconfig
+      vim.lsp.config(server_name, {})
+
+      -- 2. vim.lsp.enable automatically starts the LSP when matching files are opened
+      vim.lsp.enable(server_name)
     end
   end,
 }
