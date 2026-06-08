@@ -1,6 +1,6 @@
 # download this file with:
 # cd ~/Downloads
-# curl -sL -o "plugins_setup.sh" https://raw.githubusercontent.com/Matteoleccardi/dotfiles/refs/heads/main/neovim/plugins_setup.sh
+# curl -sL -o "./plugins_setup.sh" https://raw.githubusercontent.com/Matteoleccardi/dotfiles/refs/heads/main/neovim/plugins_setup.sh
 
 cd ~
 
