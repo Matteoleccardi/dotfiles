@@ -10,11 +10,13 @@ cd ~
 mkdir -p ~/.config/nvim/lua/plugins
 mkdir -p ~/.config/nvim/lua/config
 
+BASEURL="https://raw.githubusercontent.com/Matteoleccardi/dotfiles/refs/heads/main"
+
 # download your init
-curl -sL -o ~/.config/nvim/init.lua https://raw.githubusercontent.com/Matteoleccardi/dotfiles/refs/heads/main/neovim/init.lua
+curl -sL -o ~/.config/nvim/init.lua "$BASEURL/neovim/init.lua"
 
 # install Plugin Manager
-curl -sL -o ~/.config/nvim/lua/config/lazy.lua https://raw.githubusercontent.com/Matteoleccardi/dotfiles/refs/heads/main/neovim/lua/config/lazy.lua
+curl -sL -o ~/.config/nvim/lua/config/lazy.lua "$BASEURL/neovim/lua/config/lazy.lua"
 
 # install Language Server Manager
 curl -sL -o ~/.config/nvim/lua/plugins/mason.lua "$BASEURL/neovim/lua/plugins/mason.lua"
