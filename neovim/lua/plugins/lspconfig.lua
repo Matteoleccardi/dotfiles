@@ -5,7 +5,8 @@ return {
     -- List the exact server tokens managed by Mason
     local servers = { "pyright", "clangd", "ts_ls", "texlab", "bashls" }
 
-    for _, server_name do
+    -- FIXED: Added 'in ipairs(servers)' here so Lua can iterate correctly
+    for _, server_name in ipairs(servers) do
       -- 1. vim.lsp.config registers or extends static configurations
       -- Passing an empty table {} relies entirely on the defaults provided by nvim-lspconfig
       vim.lsp.config(server_name, {})
