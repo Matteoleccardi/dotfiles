@@ -5,7 +5,7 @@ return {
     local lspconfig = require("lspconfig")
     
     -- Tell Neovim how to activate each server once Mason installs it
-    local servers = { "pyright", "clangd", "ts_ls", "texlab" }
+    local servers = { "pyright", "clangd", "ts_ls", "texlab", "bashls" }
     for _, server in ipairs(servers) do
       lspconfig[server].setup({})
     end
