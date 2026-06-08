@@ -8,3 +8,9 @@
 
 # neovim (aside or instead of vim)
 sudo dnf install -y neovim python3-neovim
+
+
+# yazi (terminal file explorer)
+dnf copr enable lihaohong/yazi
+dnf install yazi
+
