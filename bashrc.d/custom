@@ -41,3 +41,16 @@ function set_custom_prompt() {
 
 export PROMPT_COMMAND="set_custom_prompt"
 
+
+
+
+### DEFAULT CLI TEXT EDITOR ###
+# Set default editor based on availability (Neovim > Vim > Nano)
+if command -v nvim >/dev/null 2>&1; then
+    export EDITOR="nvim"
+elif command -v vim >/dev/null 2>&1; then
+    export EDITOR="vim"
+else
+    export EDITOR="nano"
+fi
+export VISUAL="$EDITOR"
