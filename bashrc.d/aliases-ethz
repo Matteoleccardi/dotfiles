@@ -11,10 +11,28 @@ fi
 # starthcatsegment
 HOST=$(hostname | tr '[:upper:]' '[:lower:]')
 case "$HOST" in
-    # 1. Substring matches using a pattern with wildcards (*)
     "magnum"|*octopus*|*bmic*|*biwi*)
         # This single pattern matches if 'octopus', 'bmic', or 'biwi' is anywhere in the hostname
-        alias starthcatsegment="conda activate hcatsegment && cd /scratch_net/magnum/mleccardi/Repos/HCATSegment/"
+        echo "ATTENTION: barhrc.d/ethz related files are to be reworked and checked: not up to date."
+                
+        # SQLite
+        export LD_LIBRARY_PATH="/scratch/mleccardi/.local/sqlite/lib:$LD_LIBRARY_PATH"
+        
+        # SLURM at ETHZ - CVL
+        export SLURM_CONF="/home/sladmcvl/slurm/slurm.conf"
+        
+        alias ssmon="smon | GREP_COLOR='01;32' grep --color=always -E 'free|$' | GREP_COLOR='01;33' grep --color=always -E '${USER}|$'"
+        alias sssmon="smon | grep mlec"
+        
+        alias ssqueue="squeue | GREP_COLOR='01;33' grep --color=always -E 'Resources|Priority|$' | GREP_COLOR='01;32' grep --color=always -E 'mleccard|$'"
+        alias sssqueue="ssqueue | grep mlec"
+        
+        # For python pip to not clog /home/mleccardi on "magnum" machine at ETHZ - CVL
+        export TMPDIR="/scratch_net/magnum/mleccardi/.tmp"
+        
+        # Projects
+        alias starthcatsegment='cd /scratch_net/magnum/mleccardi/Repo/HCATSegment; conda activate hcatsegment'
+
         ;; # End of case pattern 2
 
     # Fallback for all other hostnames
@@ -23,21 +41,4 @@ case "$HOST" in
 esac
 unset $HOST
 
-# SQLite
-export LD_LIBRARY_PATH="/scratch/mleccardi/.local/sqlite/lib:$LD_LIBRARY_PATH"
-
-# SLURM at ETHZ - CVL
-export SLURM_CONF="/home/sladmcvl/slurm/slurm.conf"
-
-alias ssmon="smon | GREP_COLOR='01;32' grep --color=always -E 'free|$' | GREP_COLOR='01;33' grep --color=always -E '${USER}|$'"
-alias sssmon="smon | grep mlec"
-
-alias ssqueue="squeue | GREP_COLOR='01;33' grep --color=always -E 'Resources|Priority|$' | GREP_COLOR='01;32' grep --color=always -E 'mleccard|$'"
-alias sssqueue="ssqueue | grep mlec"
-
-# For python pip to not clog /home/mleccardi on "magnum" machine at ETHZ - CVL
-export TMPDIR="/scratch_net/magnum/mleccardi/.tmp"
-
-# Projects
-alias starthcatsegment='cd /scratch_net/magnum/mleccardi/Repo/HCATSegment; conda activate hcatsegment'
 
