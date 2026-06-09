@@ -1,25 +1,26 @@
 -- ~/.config/nvim/lua/plugins/lsp.lua
 
 return {
+  -- We keep this as a dependency so Neovim has access to the community server templates
   "neovim/nvim-lspconfig",
   dependencies = {
     "williamboman/mason.nvim",
     "williamboman/mason-lspconfig.nvim",
   },
   config = function()
-    -- 1. Initialize Mason to handle downloads
+    -- 1. Initialize Mason to download the binaries
     require("mason").setup()
 
-    -- 2. Define the expanded list of servers including your web and SQL tools
+    -- 2. Define your languages (including the web and SQL tools)
     local servers = { 
       "pyright", 
       "clangd", 
       "texlab", 
       "bashls",
-      "html",
-      "cssls",
-      "ts_ls",
-      "sqls",
+      "html",    
+      "cssls",   
+      "ts_ls",   
+      "sqls",    
     }
 
     -- 3. Ensure mason automatically keeps these binaries installed
@@ -27,26 +28,29 @@ return {
       ensure_installed = servers,
     })
 
-    -- 4. Correctly boot and apply default profiles via lspconfig hook
-    local lspconfig = require("lspconfig")
+    -- 4. THE MODERN WAY: Register and auto-activate servers natively
     for _, server_name in ipairs(servers) do
-      -- .setup() automatically grabs correct default cmds, filetypes, and root markers
-      lspconfig[server_name].setup({})
+      -- vim.lsp.config initializes or overrides the static configuration
+      -- An empty table {} gracefully inherits the upstream defaults from nvim-lspconfig
+      vim.lsp.config(server_name, {})
+      
+      -- vim.lsp.enable hooks into the FileType autocommands to start the server
+      vim.lsp.enable(server_name)
     end
 
-    -- 5. Bind interactive keys the second any LSP hooks up to a file
+    -- 5. Bind interactive keys when any LSP attaches
     vim.api.nvim_create_autocmd("LspAttach", {
       callback = function(args)
         local opts = { buffer = args.buf }
 
-        -- Press 'K' (Shift+k) in normal mode to see documentation popups
+        -- Manual override keys (Shift+K for documentation)
         vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-
-        -- Press 'gd' to jump straight to where a function/variable is defined
         vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
 
-        -- Press '<leader>rn' (Space + r + n) to rename a variable across the whole project
-        vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
+        -- Note: Neovim 0.11 now provides built-in default bindings:
+        -- 'grn' -> Rename variable (Replaces <leader>rn)
+        -- 'grr' -> View references
+        -- 'gra' -> Code actions
       end,
     })
   end,
