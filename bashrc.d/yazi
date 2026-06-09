@@ -1,1 +1,14 @@
 # yazi terminal file explorer
+
+# in yazi, when navigating folders, if click 'o' on a folder
+# when opening yazi with 'y', exit yazi and move to that folder 
+# in the current terminal
+
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
+	yazi "$@" --cwd-file="$tmp"
+	if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+		builtin cd -- "$cwd"
+	fi
+	rm -f -- "$tmp"
+}
