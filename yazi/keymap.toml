@@ -1,1 +1,5 @@
+[[manager.prepend_keymap]]
+on   = "<Enter>"
+run  = [ "plugin --sync smart-enter", "quit --no-cwd-file" ]
+desc = "Enter folder / Open file, or quit and save CWD if it is a directory"
 
