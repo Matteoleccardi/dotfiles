@@ -6,9 +6,11 @@
 
 function y() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
+	export YAZI_CWD_FILE="$tmp"
 	yazi "$@" --cwd-file="$tmp"
 	if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
 		builtin cd -- "$cwd"
 	fi
 	rm -f -- "$tmp"
+	unset YAZI_CWD_FILE
 }
