@@ -24,7 +24,7 @@ curl -sL -o ~/.config/nvim/lua/config/lazy.lua "$BASECONFIG/lazy.lua"
 curl -sL -o ~/.config/nvim/lua/plugins/mason.lua "$BASEPLUGINS/mason.lua"
 
 # install plugins
-for plugin in treesitter lspconfig telescope yazi mini-pairs tokionight; do
+for plugin in treesitter lspconfig telescope yazi mini-pairs tokionight catppuccin; do
     curl -sL -o ~/.config/nvim/lua/plugins/${plugin}.lua "$BASEPLUGINS/${plugin}.lua" || echo "Failed: ${plugin}.lua"
 done
 
