@@ -23,6 +23,7 @@ case "$HOST" in
     # Fallback for all other hostnames
     *)
         ;; # End of default case
-
+esac
+unset $HOST
 
 
