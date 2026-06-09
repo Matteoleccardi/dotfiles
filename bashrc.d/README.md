@@ -21,5 +21,5 @@ unset rc # Clean up
 You have to use `curl` to download from GitHub raw content:
 
 ```bash
- curl -O https://raw.githubusercontent.com/Matteoleccardi/dotfiles/refs/heads/main/bashrc.d/{aliases,aliases-ethz,custom,paths,paths-ethz}
+cd ~/.bashrc.d/ && curl -O https://raw.githubusercontent.com/Matteoleccardi/dotfiles/refs/heads/main/bashrc.d/{aliases,aliases-ethz,custom,paths,paths-ethz,yazi,zoxide}
 ```
