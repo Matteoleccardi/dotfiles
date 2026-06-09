@@ -94,6 +94,9 @@ vim.cmd('packadd! nohlsearch')
 
 
 -- PACKAGES AND PLUGINS --
+-- Options to make plugins work --
+vim.opt.termguicolors = true -- for nvim-treesitter
+
 -- Initialize the lazy.nvim plugin manager
 require("config.lazy")
 
