@@ -1,0 +1,4 @@
+# tool mainly used by yazi terminal file explorer
+# (install fzf, zoxide, yazi) 
+
+eval "$(zoxide init bash)"
