@@ -1,5 +1,19 @@
 # How To
 
+## Update the content of .bashrc.d/ folder content
+
+You have to use `curl` to download from GitHub raw content:
+
+```bash
+cd ~/.bashrc.d/
+for f in aliases aliases-ethz custom paths paths-ethz yazi zoxide; do
+  curl -sL -O  "https://raw.githubusercontent.com/Matteoleccardi/dotfiles/refs/heads/main/bashrc.d/$f" || echo "Falied: $f"
+done
+cd
+```
+
+
+
 ## Setup the .bashrc or .bash_profile file
 Copy-paste these following lines in your bashrc file to import all the files 
 in the `~/.bashrc.d/` folder into the `.bashrc` file.
@@ -14,12 +28,4 @@ if [ -d ~/.bashrc.d ]; then
     done < <(find ~/.bashrc.d -maxdepth 1 -type f -not -name '*.*' -print0)
 fi
 unset rc # Clean up
-```
-
-## Update the content of .bashrc.d/ folder content
-
-You have to use `curl` to download from GitHub raw content:
-
-```bash
-cd ~/.bashrc.d/ && curl -O https://raw.githubusercontent.com/Matteoleccardi/dotfiles/refs/heads/main/bashrc.d/{aliases,aliases-ethz,custom,paths,paths-ethz,yazi,zoxide}
 ```
