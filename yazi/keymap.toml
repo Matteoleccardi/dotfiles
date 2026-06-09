@@ -1,5 +1,14 @@
 [[manager.prepend_keymap]]
-on   = "<Enter>"
-run  = [ "plugin --sync smart-enter", "quit --no-cwd-file" ]
-desc = "Enter folder / Open file, or quit and save CWD if it is a directory"
+on   = "o"
+run  = "quit"
+desc = "Exit Yazi and CHANGE terminal directory"
 
+[[manager.prepend_keymap]]
+on   = "q"
+run  = "quit --no-cwd-file"
+desc = "Exit Yazi and KEEP original terminal directory"
+
+[[manager.prepend_keymap]]
+on   = "<C-c>"
+run  = "quit --no-cwd-file"
+desc = "Exit Yazi via Ctrl+C and KEEP original terminal directory"
