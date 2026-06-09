@@ -2,7 +2,7 @@
 return {
   "folke/tokyonight.nvim",
   lazy = false,    -- Load immediately during startup
-  priority = 1000, -- Load this before all other plugins
+  priority = 10, -- Load this before all other plugins
   opts = {
     styles = {
       -- Enable italics for comments
