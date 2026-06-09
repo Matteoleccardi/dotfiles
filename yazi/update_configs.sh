@@ -5,6 +5,6 @@ cd ~/.config/yazi
 # (https://github.com/catppuccin/yazi/tree/main/themes/mocha)
 # curl -sL -o ./theme.toml https://raw.githubusercontent.com/catppuccin/yazi/refs/heads/main/themes/mocha/catppuccin-mocha-peach.toml
 
-for f in yazi theme keymap vfs; do
-  curl -sLO "https://raw.githubusercontent.com/Matteoleccardi/dotfiles/refs/heads/main/yazi/$f.toml"
+for f in yazi.toml theme.toml keymap.toml vfs.toml Catppuccin-mocha.tmTheme; do
+  curl -sLO "https://raw.githubusercontent.com/Matteoleccardi/dotfiles/refs/heads/main/yazi/$f"
 done
