@@ -20,7 +20,8 @@ return {
       "html",    
       "cssls",   
       "ts_ls",   
-      "sqls",    
+      -- "sqls",  -- this need Go installed on the machine, so we use the Node.js version of this server
+      "sqlls"
     }
 
     -- 3. Ensure mason automatically keeps these binaries installed
