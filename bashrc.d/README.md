@@ -2,14 +2,10 @@
 
 ## Update the content of .bashrc.d/ folder content
 
-You have to use `curl` to download from GitHub raw content:
+You have to use `curl` to download from GitHub raw content. Check out [update.sh](./update.sh)
 
 ```bash
-cd ~/.bashrc.d/
-for f in aliases aliases-ethz custom paths paths-ethz yazi zoxide; do
-  curl -sL -O  "https://raw.githubusercontent.com/Matteoleccardi/dotfiles/refs/heads/main/bashrc.d/$f" || echo "Falied: $f"
-done
-cd
+bash update.sh
 ```
 
 
