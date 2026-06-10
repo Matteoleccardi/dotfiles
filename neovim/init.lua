@@ -14,6 +14,13 @@ vim.g.mapleader = ' '
 -- To see documentation for an option, you can use `:h 'optionname'`, for example `:h 'number'`
 -- (Note the single quotes)
 
+
+vim.opt.tabstop = 4      -- Visual width of a tab
+vim.opt.softtabstop = 4  -- Number of spaces a tab counts for when editing
+vim.opt.shiftwidth = 4   -- Size of an indent
+vim.opt.expandtab = true -- Turn tabs into spaces
+
+
 -- Print the line number in front of each line
 vim.o.number = true
 
