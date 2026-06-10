@@ -7,7 +7,7 @@
 function y() {
     # Check if yazi is installed in the system PATH
     if ! command -v yazi >/dev/null 2>&1; then
-        echo "(yazi not installed, please go to https://yazi-rust.github.io/)"
+        echo "(yazi not installed, please go to https://yazi-rs.github.io/)"
         return 1
     fi
 
