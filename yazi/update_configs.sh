@@ -7,13 +7,11 @@ cd ~/.config/yazi || exit
 # Base URL for your raw GitHub files
 REPO_URL="https://raw.githubusercontent.com/Matteoleccardi/dotfiles/refs/heads/main/yazi"
 
-echo "Downloading core configs..."
 # 2. Download core config files
 for f in yazi.toml theme.toml keymap.toml vfs.toml Catppuccin-mocha.tmTheme; do
     curl -sLO "$REPO_URL/$f"
 done
 
-echo "Downloading plugins..."
 # 3. Define your plugins array (make sure the names exactly match your GitHub folders)
 PLUGINS=("shell-cwd.yazi" "smart-enter.yazi")
 
@@ -27,5 +25,3 @@ for plugin in "${PLUGINS[@]}"; do
     done
     echo "  -> Synced: $plugin"
 done
-
-echo "Yazi sync complete!"
