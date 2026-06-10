@@ -5,6 +5,13 @@
 # in the current terminal
 
 function y() {
+    # Check if yazi is installed in the system PATH
+    if ! command -v yazi >/dev/null 2>&1; then
+        echo "(yazi not installed, please go to https://yazi-rust.github.io/)"
+        return 1
+    fi
+
+    # Main logic
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
 	export YAZI_CWD_FILE="$tmp"
 	yazi "$@" --cwd-file="$tmp"
