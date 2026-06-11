@@ -1,1 +1,8 @@
+[preview]
+# Drastically increase the quality (default is usually 50-75)
+image_quality = 90
+
+# Increase maximum pixel bounds so Yazi feeds higher resolution data to Chafa
+max_width = 2400
+max_height = 3600
 
