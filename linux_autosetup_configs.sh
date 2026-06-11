@@ -47,8 +47,10 @@ echo "https://github.com/Matteoleccardi/dotfiles/blob/main/miniconda3/.condarc"
 
 # list of packages to install manually
 echo "Please install the following yourself:"
-echo "yazi zoxide fzf tmux screen vim neovim miniconda 7z"
-echo "htop btop fastfetch ffmpeg  mpv"
+echo "htop btop fastfetch mpv vlc"     # instead of fastfetch you can use hostnameclt
+echo "miniconda nvm"                   # version managers for python and node.js that install in $HOME
+                                       # both required
+echo "tmuxffmpeg  7z fzf zoxide yazi neovim"
 
 
 # cleanup
