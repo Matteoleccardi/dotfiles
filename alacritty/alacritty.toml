@@ -1,0 +1,27 @@
+# https://github.com/alacritty/alacritty#configuration
+
+general.import = [
+  "~/.config/alacritty/catppuccin-mocha.toml"
+]
+
+[env]
+TERM = "xterm-256color"
+
+[font]
+size = 10.0
+
+[font.normal]
+family = "FiraMono Nerd Font Mono Medium"
+style = "Regular"
+
+[font.bold]
+family = "FiraMono Nerd Font Mono Medium"
+style = "Bold"
+
+[font.italic]
+family = "FiraMono Nerd Font Mono Medium"
+style = "Italic"
+
+[font.bold_italic]
+family = "FiraMono Nerd Font Mono Medium"
+style = "Bold Italic"
