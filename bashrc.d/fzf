@@ -1,0 +1,29 @@
+if command -v fzf &>/dev/null; then
+  #
+  
+  if command -v bat &>/dev/null; then
+    export FZF_DEFAULT_OPTS="--preview 'bat --style=plain --color=always {}' --preview-window up,50%"
+  fi
+
+  #
+  
+  if command -v fd &>/dev/null; then
+    # fd commands
+    cmd_git='fd . --type f --hidden --exclude .git --exclude node_modules --exclude __pycache__'
+    cmd_nogit='fd . --type f --hidden'
+  else
+    # find commands: NOTE that -prune must come BEFORE -type f to work correctly
+    cmd_git='find . \( -name ".git" -o -name "node_modules" -o -name "__pycache__" \) -prune -o -type f -print'
+    cmd_nogit='find . -type f'
+  fi
+  # ( we use double quotes to inject the variables above NOW, but we ESCAPE the $ in \$(git...) so it evaluates LATER (when fzf actually runs) ).
+  export FZF_DEFAULT_COMMAND="if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then cd \$(git rev-parse --show-toplevel) && $cmd_git; else $cmd_nogit; fi"
+    
+  
+  # use **<TAB> for autocompleting using fzf in the terminal
+  if fzf --bash >/dev/null 2>&1; then
+    eval "$(fzf --bash)"
+    export FZF_COMPLETION_TRIGGER='**'
+  fi
+
+fi
