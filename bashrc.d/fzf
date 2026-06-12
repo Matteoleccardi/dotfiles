@@ -8,16 +8,18 @@ if command -v fzf &>/dev/null; then
   #
   
   if command -v fd &>/dev/null; then
-    # fd commands
-    cmd_git='fd . --type f --hidden --exclude .git --exclude node_modules --exclude __pycache__'
-    cmd_nogit='fd . --type f --hidden'
+    # We use $git_root here, which will be captured dynamically when fzf runs
+    cmd_git='fd . "$git_root" --type f --exclude .git --exclude node_modules --exclude __pycache__'
+    cmd_nogit='fd . --type f'
   else
-    # find commands: NOTE that -prune must come BEFORE -type f to work correctly
-    cmd_git='find . \( -name ".git" -o -name "node_modules" -o -name "__pycache__" \) -prune -o -type f -print'
+    # find commands: pass "$git_root" instead of "."
+    cmd_git='find "$git_root" \( -name ".git" -o -name "node_modules" -o -name "__pycache__" \) -prune -o -type f -print'
     cmd_nogit='find . -type f'
   fi
   # ( we use double quotes to inject the variables above NOW, but we ESCAPE the $ in \$(git...) so it evaluates LATER (when fzf actually runs) ).
-  export FZF_DEFAULT_COMMAND="if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then cd \$(git rev-parse --show-toplevel) && $cmd_git; else $cmd_nogit; fi"
+  # We check for the git root and assign it to $git_root. 
+  # We use 'eval' so the commands above can safely read the $git_root variable.
+  export FZF_DEFAULT_COMMAND="if git_root=\$(git rev-parse --show-toplevel 2>/dev/null); then eval '$cmd_git'; else eval '$cmd_nogit'; fi"
     
   
   # use **<TAB> for autocompleting using fzf in the terminal
