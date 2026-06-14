@@ -52,6 +52,7 @@ echo "miniconda nvm"                   # version managers for python and node.js
                                        # both required
 echo "tmuxffmpeg  7z fzf zoxide chafa yazi neovim"
 echo "ghostty (alcritty is good alternative)"
+echo "rmpc" # A TUI music player: https://rmpc.mierak.dev/
 
 
 # cleanup
