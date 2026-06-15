@@ -9,12 +9,12 @@ if command -v fzf &>/dev/null; then
   
   if command -v fd &>/dev/null; then
     # We use $git_root here, which will be captured dynamically when fzf runs
-    cmd_git='fd . "$git_root" --type f --exclude .git --exclude node_modules --exclude __pycache__'
-    cmd_nogit='fd . --type f'
+    cmd_git='fd . "$git_root" --type f --hidden --follow --exclude .git --exclude node_modules --exclude __pycache__'
+    cmd_nogit='fd . --type f --hidden --follow'
   else
     # find commands: pass "$git_root" instead of "."
-    cmd_git='find "$git_root" \( -name ".git" -o -name "node_modules" -o -name "__pycache__" \) -prune -o -type f -print'
-    cmd_nogit='find . -type f'
+    cmd_git='find -L "$git_root" \( -name ".git" -o -name "node_modules" -o -name "__pycache__" \) -prune -o -type f -print'
+    cmd_nogit='find -L . -type f'
   fi
   # ( we use double quotes to inject the variables above NOW, but we ESCAPE the $ in \$(git...) so it evaluates LATER (when fzf actually runs) ).
   # We check for the git root and assign it to $git_root. 
