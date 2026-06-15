@@ -1,0 +1,12 @@
+#![enable(implicit_some)]
+#![enable(unwrap_newtypes)]
+#![enable(unwrap_variant_newtypes)]
+
+(
+    address: "127.0.0.1:6600",           // MPD exposed port
+    // password: "your_secret_password", // Replace with your actual MPD password if you have that set up
+    // theme: Some("catppuccin_mocha"),
+    volume_step: 5,
+    enable_mouse: true,
+)
+
