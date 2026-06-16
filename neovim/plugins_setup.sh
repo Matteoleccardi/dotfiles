@@ -24,7 +24,13 @@ curl -sL -o ~/.config/nvim/lua/config/lazy.lua "$BASECONFIG/lazy.lua"
 curl -sL -o ~/.config/nvim/lua/plugins/mason.lua "$BASEPLUGINS/mason.lua"
 
 # install plugins
-for plugin in treesitter lspconfig telescope yazi mini-pairs tokionight catppuccin; do
+# (
+#   this might be useful:
+#   
+#   cd ~/.config/nvim/lua/plugins/
+#   a=""; for f in *; do a="$a ${f%.*}"; done; echo $a; unset a;
+# )
+for plugin in catppuccin lspconfig lualine mason mini-pairs telescope tokionight treesitter undotree yazi; do
     curl -sL -o ~/.config/nvim/lua/plugins/${plugin}.lua "$BASEPLUGINS/${plugin}.lua" || echo "Failed: ${plugin}.lua"
 done
 
