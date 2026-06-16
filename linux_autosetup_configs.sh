@@ -51,6 +51,7 @@ echo "htop btop fastfetch mpv vlc dmenu"               # instead of fastfetch yo
 echo "miniconda nvm"                                   # version managers for python and node.js that install in $HOME
                                                        # both required
 echo "tmux ffmpeg 7z fzf zoxide chafa yazi neovim"
+echo "watchman"                                        # https://github.com/facebook/watchman/releases/latest (by same author of WezTerm
 echo "mpd rmpc"                                        # (local, mainly) music server and client (proper server with subsonic API: navidrome)
 echo "wezterm alacritty"                               # terminal emulators, prefer wezterm (alacritty for simplicity)
 
