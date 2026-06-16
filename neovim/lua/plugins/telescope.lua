@@ -1,3 +1,7 @@
+-- A fuzzy finder
+-- It allows you to quickly search for, preview, and select files, text strings, commands, 
+-- and git history without leaving your code editor.
+
 return {
   "nvim-telescope/telescope.nvim",
   dependencies = { "nvim-lua/plenary.nvim" },

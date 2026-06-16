@@ -1,3 +1,8 @@
+-- A file explorer qand manager that can be opened directly from within nvim
+-- Coupled with the Yazi Terminal File Manager outside nvim (standalone package)
+-- Works best if you also have the following packages installed on your system: 
+--   fd, fzf, zoxide, chafa, a terminal with Kitty Image Protokol (like Ghostty, WezTerm, ...), ffmpeg
+
 ---@type LazySpec
 return {
   "mikavilpas/yazi.nvim", -- from: https://github.com/mikavilpas/yazi.nvim
