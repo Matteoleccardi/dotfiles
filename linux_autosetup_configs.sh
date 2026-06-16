@@ -47,12 +47,13 @@ echo "https://github.com/Matteoleccardi/dotfiles/blob/main/miniconda3/.condarc"
 
 # list of packages to install manually
 echo "Please install the following yourself:"
-echo "htop btop fastfetch mpv vlc dmenu"     # instead of fastfetch you can use hostnameclt
-echo "miniconda nvm"                   # version managers for python and node.js that install in $HOME
-                                       # both required
+echo "htop btop fastfetch mpv vlc dmenu"               # instead of fastfetch you can use hostnameclt
+echo "miniconda nvm"                                   # version managers for python and node.js that install in $HOME
+                                                       # both required
 echo "tmux ffmpeg 7z fzf zoxide chafa yazi neovim"
-echo "ghostty (alcritty is good alternative)"
-echo "mpd rmpc"
+echo "mpd rmpc"                                        # (local, mainly) music server and client (proper server with subsonic API: navidrome)
+echo "wezterm alacritty"                               # terminal emulators, prefer wezterm (alacritty for simplicity)
+
 
 
 # cleanup
