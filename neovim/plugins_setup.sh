@@ -3,6 +3,11 @@
 # download this file with:
 # cd ~/Downloads
 # curl -sL -o "./plugins_setup.sh" https://raw.githubusercontent.com/Matteoleccardi/dotfiles/refs/heads/main/neovim/plugins_setup.sh
+#
+# or better (onel liner):
+# curl -sL -o- https://raw.githubusercontent.com/Matteoleccardi/dotfiles/refs/heads/main/neovim/plugins_setup.sh | bash
+
+curr_wd=$(pwd)
 
 cd ~
 
@@ -33,3 +38,5 @@ done
 
 # done
 echo "Setup completed. now open neovim with 'nvim' and follow instructions."
+
+cd "$curr_wd"
