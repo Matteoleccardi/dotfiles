@@ -24,20 +24,22 @@ return {
       "sqlls"
     }
 
+    -- 2.1 setup LSP - autocompletion interface (see completions.lua)
+    local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
     -- 3. Ensure mason automatically keeps these binaries installed
     require("mason-lspconfig").setup({
       ensure_installed = servers,
     })
 
-    -- 4. THE MODERN WAY: Register and auto-activate servers natively
+
+    -- THE MODERN 0.11 WAY (No deprecation warnings)
     for _, server_name in ipairs(servers) do
-      -- vim.lsp.config initializes or overrides the static configuration
-      -- An empty table {} gracefully inherits the upstream defaults from nvim-lspconfig
-      vim.lsp.config(server_name, {})
-      
-      -- vim.lsp.enable hooks into the FileType autocommands to start the server
+      vim.lsp.config(server_name, {
+        capabilities = capabilities,
+      })
       vim.lsp.enable(server_name)
-    end
+    end 
 
     -- 5. Bind interactive keys when any LSP attaches
     vim.api.nvim_create_autocmd("LspAttach", {
@@ -45,8 +47,11 @@ return {
         local opts = { buffer = args.buf }
 
         -- Manual override keys (Shift+K for documentation)
-        vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-        vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+        vim.keymap.set("n", "<leader>K", vim.lsp.buf.hover, opts)
+        vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, opts)
+        vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references, opts)
+        vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
+
 
         -- Note: Neovim 0.11 now provides built-in default bindings:
         -- 'grn' -> Rename variable (Replaces <leader>rn)
