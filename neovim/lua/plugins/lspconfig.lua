@@ -51,7 +51,11 @@ return {
         vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, opts)
         vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references, opts)
         vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
-
+        
+        -- view diagnostic messages (errors, warning, hints)
+        vim.keymap.set('n', '<space>d', vim.diagnostic.open_float, { desc = "Show line diagnostic" })
+        vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic" })
+        vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = "Go to next diagnostic" })
 
         -- Note: Neovim 0.11 now provides built-in default bindings:
         -- 'grn' -> Rename variable (Replaces <leader>rn)
