@@ -33,9 +33,16 @@ return {
           ["<C-b>"] = cmp.mapping.scroll_docs(-4),
           ["<C-f>"] = cmp.mapping.scroll_docs(4),
           ["<C-Space>"] = cmp.mapping.complete(),
-          ["<C-e>"] = cmp.mapping.abort(),
           ["<CR>"] = cmp.mapping.confirm({ select = true }),
-        }),
+          ["<C-e>"] = cmp.mapping.abort(),
+          ["<Esc>"] = cmp.mapping(function(fallback)
+              if cmp.visible() then
+                cmp.abort() -- Closes the menu and restores original text
+              else
+                fallback()   -- Goes to Normal Mode if menu is already closed
+              end
+            end, { 'i', 's' }), -- Applies in Insert and Select modes
+          }),
         sources = cmp.config.sources({
           { name = "nvim_lsp" },
           { name = "luasnip" }, -- For luasnip users.
@@ -46,3 +53,4 @@ return {
     end,
   },
 }
+
