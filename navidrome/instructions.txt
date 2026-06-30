@@ -1,0 +1,21 @@
+Deploy it (start first time ever):
+podman kube play navidrome.yaml
+
+Start it:
+podman pod start navidrome-pod
+
+See logs:
+podman logs -f navidrome-pod-navidrome
+
+Stop it:
+podman kube down navidrome.yaml
+
+Restart: stop and Start
+
+ATTENTION: since podman can run pods rootless,
+user services might stop working if we log out of ssh
+or from the PC (like, the PC restarts).
+To tell the pc to keep services running for my user,
+you have to do:
+
+loginctl enable-linger $USER
