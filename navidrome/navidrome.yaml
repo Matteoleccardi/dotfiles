@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: navidrome-pod
+  labels:
+    app: navidrome
+spec:
+  containers:
+    - name: navidrome
+      image: docker.io/deluan/navidrome:latest
+      ports:
+        - containerPort: 4533
+          hostPort: 4533
+      env:
+        - name: ND_SCANSCHEDULE
+          value: "1h"
+        - name: ND_LOGLEVEL
+          value: "info"
+      volumeMounts:
+        - name: navidrome-data
+          mountPath: /data:Z
+        - name: navidrome-music
+          mountPath: /music:Z
+  volumes:
+    - name: navidrome-data
+      hostPath:
+        path: /home/mleccardi/.local/share/navidrome/data
+        type: DirectoryOrCreate
+    - name: navidrome-music
+      hostPath:
+        path: /home/mleccardi/Moosic
+        type: Directory
+  restartPolicy: Always
