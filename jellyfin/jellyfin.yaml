@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: jellyfin-pod
+  labels:
+    app: jellyfin
+spec:
+  containers:
+    - name: jellyfin
+      image: docker.io/jellyfin/jellyfin:latest
+      ports:
+        - containerPort: 8096
+          hostPort: 8096
+        - containerPort: 7359
+          hostPort: 7359
+          protocol: UDP
+      volumeMounts:
+        - name: jellyfin-config
+          mountPath: /config:Z
+        - name: jellyfin-cache
+          mountPath: /cache:Z
+        - name: jellyfin-media
+          mountPath: /media:Z
+  volumes:
+    - name: jellyfin-config
+      hostPath:
+        path: /home/mleccardi/.local/share/jellyfin/config
+        type: DirectoryOrCreate
+    - name: jellyfin-cache
+      hostPath:
+        path: /home/mleccardi/.local/share/jellyfin/cache
+        type: DirectoryOrCreate
+    - name: jellyfin-media
+      hostPath:
+        path: /home/mleccardi/Veedeos/media
+        type: DirectoryOrCreate
