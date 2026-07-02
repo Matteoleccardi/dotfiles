@@ -1,0 +1,7 @@
+.../media/
+├── movies/       # Full-length feature films (e.g., .mkv, .mp4)
+├── tvshows/      # Episodic series divided into Season folders
+├── music/        # Audio tracks (e.g., .mp3, .flac) sorted by Artist -> Album
+├── musicvideos/  # Concert films, standalone music videos, and live tracks
+├── photos/       # Personal home videos and image galleries (.jpg, .png, .mov)
+└── books/        # E-books, digital audiobooks, and comic books (.epub, .mp3, .cbz)
