@@ -1,1 +1,51 @@
-instructions here
+======================================================================
+ADGUARD HOME + PODMAN + NETBIRD ON FEDORA (SELINUX)
+======================================================================
+
+STEP 1: FREE UP PORT 53
+actually not needed, sicne we route different host ports to the right container port.
+
+STEP 2: CREATE PERSISTENT STORAGE
+----------------------------------------------------------------------
+WHAT: 
+mkdir -p ~/.local/share/adguard/{work,conf,adguard}
+
+WHY: 
+Containers are ephemeral; if you don't map storage to the host machine, you will lose your blocklists and settings every time the server reboots.
+
+
+STEP 3: LAUNCH PODMAN 
+----------------------------------------------------------------------
+WHAT: 
+podman kube play adguard.yaml
+
+WHY: 
+This reads your separate YAML file and launches the rootless container. The :Z flags in your YAML tell SELinux to safely grant Podman read/write permissions to those folders we just created.
+
+
+STEP 4: INITIALIZE ADGUARD
+----------------------------------------------------------------------
+WHAT: 
+1. Go to http://<FEDORA_NETBIRD_IP>:3000
+2. In "Listen Interfaces", leave the DNS server on Port 53.
+3. Leave the Admin Web Interface on Port 80 (Podman maps this internally to 8080).
+4. Create an admin account and finish.
+5. Access your permanent dashboard at http://<FEDORA_NETBIRD_IP>:8080
+
+WHY: 
+AdGuard needs initial setup before it starts blocking traffic. Port 3000 is a temporary setup wizard that disappears once configured.
+
+
+STEP 5: ROUTE THE NETBIRD MESH
+----------------------------------------------------------------------
+WHAT: 
+1. Open the NetBird Cloud Dashboard -> DNS -> Nameservers.
+2. Click "Add Nameserver" -> "Custom DNS".
+3. Name: AdGuard Home.
+4. IP: <FEDORA_NETBIRD_IP>.
+5. Toggle "Primary": ON.
+6. Distribution Groups: All.
+
+WHY: 
+Toggling "Primary" to ON is the magic switch. It forces every device in your NetBird mesh (laptop, phone, etc.) to ignore their local Wi-Fi DNS and tunnel all requests through your Fedora server, blocking ads globally.
+======================================================================
