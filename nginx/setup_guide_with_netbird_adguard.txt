@@ -1,0 +1,88 @@
+Nginx Reverse Proxy + AdGuard + NetBird Setup Guide
+==================================================
+
+This guide covers setting up Nginx as a local reverse proxy inside your NetBird mesh network, using AdGuard for wildcard DNS rewrites so you can access services by name (e.g., service.yourdomain.com) instead of IP and port.
+
+STEP 1: PREPARE PORT 80 & SELINUX
+--------------------------------------------------
+Nginx requires Port 80. If AdGuard is occupying it, stop AdGuard, change the port to 8080 inside `/opt/AdGuardHome/AdGuardHome.yaml` under `http: address:`, then restart AdGuard.
+
+Next, allow Fedora's SELinux to let Nginx make internal proxy connections:
+sudo setsebool -P httpd_can_network_connect 1
+
+STEP 2: INSTALL & ENABLE NGINX
+--------------------------------------------------
+sudo dnf install nginx -y
+sudo systemctl enable --now nginx
+
+STEP 3: CREATE THE REVERSE PROXY CONFIGURATION
+--------------------------------------------------
+Create a configuration file for your domain (e.g., yourdomain.com) inside Nginx's configuration directory:
+sudo nano /etc/nginx/conf.d/yourdomain.com.conf
+
+Paste the following template (modify service names and ports as needed):
+
+# ------------------------------------------------------------------------------
+# Nginx Configuration Template for yourdomain.com
+# Update commands:  sudo nginx -t && sudo systemctl reload nginx
+# ------------------------------------------------------------------------------
+
+# Service 1: AdGuard Dashboard
+server {
+    listen 80;
+    server_name adguard.yourdomain.com;
+
+    location / {
+        proxy_pass http://127.0.0.1:8080;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+
+# Service 2: Example Media Service (e.g., Jellyfin)
+server {
+    listen 80;
+    server_name media.yourdomain.com;
+
+    location / {
+        proxy_pass http://127.0.0.1:547;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+
+# Service 3: Example Music Service (e.g., Navidrome)
+server {
+    listen 80;
+    server_name music.yourdomain.com;
+
+    location / {
+        proxy_pass http://127.0.0.1:3025;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+
+STEP 4: TEST AND RELOAD NGINX
+--------------------------------------------------
+Test the syntax and restart Nginx to apply changes:
+sudo nginx -t
+sudo systemctl reload nginx
+
+STEP 5: WIRING THE DNS REWRITE IN ADGUARD
+--------------------------------------------------
+To map your entire domain space to Nginx via your NetBird network using a single wildcard:
+1. Open AdGuard Dashboard (http://localhost:8080).
+2. Go to Filters -> DNS Rewrites.
+3. Click "Add DNS Rewrite".
+4. Domain name: *.yourdomain.com (The asterisk catches all subdomains).
+5. IP Address: <YOUR_SERVER_NETBIRD_IP> (e.g., 10.44.x.x)
+6. Click Save.
+
+Any device on your NetBird mesh can now type `media.yourdomain.com` or `music.yourdomain.com` to access services port-free!
