@@ -1,0 +1,34 @@
+Step 1: MakeMKV (The Rip) - installed with flatpak
+
+Insert the DVD and open MakeMKV.
+
+Click the large optical drive icon to scan the disc.
+
+Check the box for the longest title (the main movie). Optional: Check the smaller titles if you want the trailers and special features.
+Basically, check everything.
+
+Expand the main movie title's tree and ensure all the audio and subtitle languages you want are checked.
+
+Choose your output folder and click the Make MKV button.
+
+Step 2: HandBrake (The Compression) - installed with flatpak
+
+Open HandBrake and load the raw .mkv file you just created (if more, load one at a time).
+
+Go to the Presets menu (usually a dropdown or a sidebar on the right) and select your custom preset (maybe you have to import it first).
+
+Check the Audio and Subtitles tabs just to verify your tracks populated correctly.
+
+Under "Save As" at the bottom, name your file using the English title and year: Movie Name (Year).mkv.
+
+Click Start Encode.
+
+Step 3: Organize and Transfer
+
+On your local machine, put the finished .mkv file inside a folder named exactly the same: Movie Name (Year). (Add your trailers or extras folders inside here if you ripped them).
+
+Open your terminal and send it across your secure virtual network using this command:
+
+Bash
+rsync -avzP "/path/to/local/Movie Name (Year)" username@your_netbird_ip:"/path/to/jellyfin/movies/"
+Open your Jellyfin web dashboard, click Scan Library
