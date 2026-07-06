@@ -1,0 +1,1 @@
+You have to place these files inside /etc/nginx/conf.d/
