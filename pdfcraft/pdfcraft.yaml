@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pdfcraft-pod
+  labels:
+    app: pdfcraft
+spec:
+  containers:
+  - name: pdfcraft
+    image: ghcr.io/pdfcrafttool/pdfcraft:latest
+    ports:
+    - containerPort: 80
+      hostPort: 8081
+    restartPolicy: Always
