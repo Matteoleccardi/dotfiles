@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: snapotter-pod
+  labels:
+    app: snapotter
+spec:
+  containers:
+  - name: snapotter-app
+    image: docker.io/snapotter/snapotter:latest
+    ports:
+    - containerPort: 1349
+      hostPort: 1349
+    volumeMounts:
+    - mountPath: /data
+      name: snapotter-data
+  volumes:
+  - name: snapotter-data
+    persistentVolumeClaim:
+      claimName: snapotter-data-pvc
+
