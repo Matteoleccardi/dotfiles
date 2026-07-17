@@ -1,0 +1,15 @@
+[Unit]
+Description=Immich Kubernetes Pod Service
+
+[Kube]
+# Tells Podman to play the yaml file we just created
+Yaml=immich.yaml
+# Automatically manages network ports
+PublishPort=2283:2283
+
+[Install]
+WantedBy=default.target
+
+# put in ~/.config/containers/systemd/
+# systemctl --user daemon-reload
+# systemctl --user start immich.service
