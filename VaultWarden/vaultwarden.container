@@ -1,0 +1,17 @@
+[Unit]
+Description=Vaultwarden Password Manager
+
+[Container]
+Image=docker.io/vaultwarden/server:latest
+ContainerName=vaultwarden-app
+PublishPort=8095:80
+Volume=vaultwarden-data:/data:Z
+
+# We leave signups open for now so you can make your admin account
+Environment=SIGNUPS_ALLOWED=true
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target
