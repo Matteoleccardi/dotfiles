@@ -29,6 +29,8 @@ On your local machine, put the finished .mkv file inside a folder named exactly 
 
 Open your terminal and send it across your secure virtual network using this command:
 
-Bash
-rsync -avzP "/path/to/local/Movie Name (Year)" username@your_netbird_ip:"/path/to/jellyfin/movies/"
+Bash (for source folder DO NOT APPEND "/" at the end):
+```sh
+while ! rsync -avzP "/path/to/local/Movie Name (Year)" usr@ip:"~/Veedeos/media/movies/"; do echo "Upload Failed. Retrying in 10 seconds..."; sleep 10s; done;
+```
 Open your Jellyfin web dashboard, click Scan Library
