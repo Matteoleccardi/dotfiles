@@ -1,0 +1,14 @@
+In dev tools -> network -> filter:
+
+/(m3u8|vtt|srt|sub)/
+
+Choose m3u8 with bigger size, when reloading the page. Copy link.
+
+Then:
+
+yt-dlp --referer "https://rezka.ag/" "https://......:manifest.m3u8" -o "title.mp4"
+
+Same process for subtitles if present (keep original extension in -o).
+Then, if subtitles:
+
+ffmpeg -i my_video.mp4 -i eng.vtt -i rus.vtt -map 0 -map 1 -map 2 -c copy -metadata:s:s:0 language=eng -metadata:s:s:1 language=rus -metadata:s:s:0 title="English" -metadata:s:s:1 title="Russian" output.mkv
