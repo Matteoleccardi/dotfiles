@@ -12,3 +12,10 @@ Same process for subtitles if present (keep original extension in -o).
 Then, if subtitles:
 
 ffmpeg -i my_video.mp4 -i eng.vtt -i rus.vtt -map 0 -map 1 -map 2 -c copy -metadata:s:s:0 language=eng -metadata:s:s:1 language=rus -metadata:s:s:0 title="English" -metadata:s:s:1 title="Russian" output.mkv
+
+
+Bash (for source folder DO NOT APPEND "/" at the end):
+```sh
+while ! rsync -avzP "/path/to/local/Movie Name (Year)" usr@ip:"~/Veedeos/media/movies/"; do echo "Upload Failed. Retrying in 10 seconds..."; sleep 10s; done;
+```
+Open your Jellyfin web dashboard, click Scan Library
