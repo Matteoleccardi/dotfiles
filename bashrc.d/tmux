@@ -1,0 +1,13 @@
+# Isolate history per tmux pane if inside tmux
+if [[ -n "$TMUX_PANE" ]]; then
+    # Dynamically point to a separate history file per pane ID
+    HISTFILE="$HOME/.bash_history_tmux_${TMUX_PANE#%}"
+
+    # Optional: Keep the history file brief (e.g., around your requested 20-50 commands)
+    HISTSIZE=50
+    HISTFILESIZE=50
+
+    # Append instantly after each command instead of waiting for pane exit
+    shopt -s histappend
+    PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+fi
