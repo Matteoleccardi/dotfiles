@@ -34,7 +34,7 @@ fetch() {  # fetch <url> <dest>
 fetch "$BASEURL/neovim/init.lua" ~/.config/nvim/init.lua
 fetch "$BASECONFIG/lazy.lua" ~/.config/nvim/lua/config/lazy.lua
 
-for plugin in alpha catppuccin completions lspconfig lualine mason mini-pairs none-ls telescope tokionight treesitter undotree yazi; do
+for plugin in alpha catppuccin completions lspconfig lualine mason mini-pairs none-ls telescope tokyonight treesitter undotree yazi; do
     fetch "$BASEPLUGINS/${plugin}.lua" ~/.config/nvim/lua/plugins/${plugin}.lua
 done
 
