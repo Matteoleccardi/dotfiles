@@ -1,0 +1,8 @@
+# copy-paste the nvim-watchdog.sh inside $HOME/.local/bin/nvim-watchdog.sh
+# chmod +x $HOME/.local/bin/nvim-watchdog.sh
+
+# start the nvim watchdog once per node, if not already running
+if ! pgrep -u "$(id -un)" -f nvim-watchdog-loop >/dev/null; then
+    ( exec -a nvim-watchdog-loop bash -c 'while sleep 60; do "$HOME/.local/bin/nvim-watchdog.sh"; done' ) >/dev/null 2>&1 &
+    disown
+fi
