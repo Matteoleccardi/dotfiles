@@ -19,21 +19,23 @@ BASEURL="https://raw.githubusercontent.com/Matteoleccardi/dotfiles/refs/heads/ma
 BASECONFIG="$BASEURL/neovim/lua/config"
 BASEPLUGINS="$BASEURL/neovim/lua/plugins"
 
-# download your init
-curl -sL -o ~/.config/nvim/init.lua "$BASEURL/neovim/init.lua"
+fetch() {  # fetch <url> <dest>
+    local tmp
+    tmp=$(mktemp) || return 1
+    if curl -fsSL --retry 3 --retry-delay 2 -o "$tmp" "$1"; then
+        mv "$tmp" "$2"
+    else
+        rm -f "$tmp"
+        echo "Failed: $2"
+        return 1
+    fi
+}
 
-# install Plugin Manager
-curl -sL -o ~/.config/nvim/lua/config/lazy.lua "$BASECONFIG/lazy.lua"
+fetch "$BASEURL/neovim/init.lua" ~/.config/nvim/init.lua
+fetch "$BASECONFIG/lazy.lua" ~/.config/nvim/lua/config/lazy.lua
 
-# install plugins
-# (
-#   this might be useful:
-#   
-#   cd ~/.config/nvim/lua/plugins/
-#   a=""; for f in *; do a="$a ${f%.*}"; done; echo $a; unset a;
-# )
 for plugin in alpha catppuccin completions lspconfig lualine mason mini-pairs none-ls telescope tokionight treesitter undotree yazi; do
-    curl -sL -o ~/.config/nvim/lua/plugins/${plugin}.lua "$BASEPLUGINS/${plugin}.lua" || echo "Failed: ${plugin}.lua"
+    fetch "$BASEPLUGINS/${plugin}.lua" ~/.config/nvim/lua/plugins/${plugin}.lua
 done
 
 # done
