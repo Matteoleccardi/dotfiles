@@ -39,7 +39,21 @@ return {
         capabilities = capabilities,
       })
       vim.lsp.enable(server_name)
-    end 
+    end
+
+    -- Pyright: cap node's heap and make it analyze open files only
+    vim.lsp.config("pyright", {
+      cmd_env = { NODE_OPTIONS = "--max-old-space-size=2048" },
+      settings = {
+        python = {
+          analysis = {
+            diagnosticMode = "openFilesOnly",
+            useLibraryCodeForTypes = true,
+            autoSearchPaths = true,
+          },
+        },
+      },
+    })
 
     -- 5. Bind interactive keys when any LSP attaches
     vim.api.nvim_create_autocmd("LspAttach", {
