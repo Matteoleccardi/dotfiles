@@ -129,6 +129,66 @@ gpu_free() {
     done
 }
 
-alias srun_show_options='echo "srun_cpu | srun_cpu_big | srun_gpu | srun_gpu_big | srun_gpu2 | srun_attach [jobid] | sq | gpu_free | ssmon | ssqueue | asqueue"'
+alias srun_show_options='echo "srun_cpu | srun_cpu_big | srun_gpu | srun_gpu_big | srun_gpu2 | srun_attach [jobid] | sq | gpu_free | ssmon | ssqueue | asqueue | scratch_info | scratch_init | scratch_path | scratch_stage SRC [SUBDIR] | scratch_check_all"'
+
+# ===== 4. Node-local NVMe scratch (compute nodes only) =============================================================
+# Every compute node has its OWN local SSD mounted at /scratch (octopus04: 1.7 TB NVMe, measured ~3-4 GB/s against ~0.3-0.6 GB/s on
+# the NFS where the datasets, caches and TMPDIR live). Facts (checked on octopus04, 2026-11-05):
+#   - it is LOCAL to the node: not visible from hades, nor from another node (copy again at the start of every job);
+#   - it is SHARED by all users (/scratch is world-writable; everybody works in /scratch/<user>);
+#   - ISG's scratch_clean (cron, minute 36) deletes only when free space falls below ~10%: oldest / biggest files of the heaviest
+#     users first, so treat it as a fast CACHE, never as the only copy of anything;
+#   - the sbatch jobs (and the prolog) do not create anything there for you: do it yourself, e.g. with scratch_init / scratch_stage.
+# NODE_SCRATCH is defined only where a writable /scratch exists (so not on hades).
+if [ -d /scratch ] && [ -w /scratch ]; then
+    export NODE_SCRATCH="/scratch/$USER"
+fi
+
+scratch_path() {   # print the path, usable as: cd "$(scratch_path)"
+    echo "${NODE_SCRATCH:-/scratch/$USER}"
+}
+
+scratch_init() {   # create the standard folders (idempotent)
+    if [ -z "$NODE_SCRATCH" ]; then
+        echo "No local /scratch on $(hostname) (login node?). Start a job first: srun_cpu / srun_gpu"
+        return 1
+    fi
+    ( umask 077; mkdir -p "$NODE_SCRATCH"/{data,cache,tmp} ) && echo "$NODE_SCRATCH ready: data/  cache/  tmp/"
+}
+
+scratch_info() {   # node, free space, my usage
+    if [ ! -d /scratch ]; then
+        echo "No local /scratch on $(hostname) (login node?)."
+        return 1
+    fi
+    echo "node: $(hostname)   my path: ${NODE_SCRATCH:-/scratch/$USER}"
+    df -h /scratch | awk 'NR==2 {printf "disk /scratch: %s total, %s used, %s free (%s used)\n", $2, $3, $4, $5}'
+    [ -d "$NODE_SCRATCH" ] && echo "mine: $(du -sh "$NODE_SCRATCH" 2>/dev/null | cut -f1) in $NODE_SCRATCH"
+    echo "reminder: local to this node, shared with other users, cleaned only when free space < 10% (oldest/biggest first)"
+}
+
+# Copy something to the local scratch (rsync: resumable, skips what is already there).
+#   scratch_stage /path/to/dir_or_file [subdir]     (default subdir: data)  ->  $NODE_SCRATCH/<subdir>/
+scratch_stage() {
+    local src="$1" sub="${2:-data}"
+    if [ -z "$src" ] || [ -z "$NODE_SCRATCH" ]; then
+        echo "Usage: scratch_stage SRC [SUBDIR]   (needs a local /scratch: run it inside a job)"
+        return 1
+    fi
+    scratch_init > /dev/null || return 1
+    echo "source size: $(du -sh "$src" 2>/dev/null | cut -f1)   free on /scratch: $(df -h --output=avail /scratch | tail -1 | tr -d ' ')"
+    rsync -a --info=progress2 "$src" "$NODE_SCRATCH/$sub/" && echo "staged in $NODE_SCRATCH/$sub/"
+}
+
+# Space on every octopus node (opens a tiny 2-minute job step per node; with the 'student' account only the nodes your jobs
+# are routed to answer, the others give up after 60 s)
+scratch_check_all() {
+    local n
+    for n in octopus01 octopus02 octopus03 octopus04; do
+        echo "=== $n ==="
+        srun --immediate=60 --nodelist="$n" --gres=gpu:0 --mem=2G --cpus-per-task=1 --time=2 \
+            bash -c 'df -h /scratch | tail -1; du -sh /scratch/$USER 2>/dev/null' 2>&1 | tail -3
+    done
+}
 
 # Removed on purpose: check_scratch() (it created/inspected /scratch/mleccardi on every octopus node, which no longer exists).
