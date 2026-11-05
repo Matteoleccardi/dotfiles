@@ -1,29 +1,37 @@
-HOST=$(hostname | tr '[:upper:]' '[:lower:]')
-case "$HOST" in
-    "magnum"|*octopus*|*bmic*|*biwi*)
-        # Where all links to everywhere you have access to are found
-        export ALLSYM="/itet-stor/$USER/"
-        
-        # Important paths
-        ## main one to use from 2026 on. It is a scratch (no regular backups).
-        export BENDERSTOR="/usr/benderstor01/data-biwi-01/mleccardi_guest/data"
-        export BHOME="$BENDERSTOR/home"
-        export BBACKUPS="$BENDERSTOR/backups"
-        ## just for original datasets
-        export DATASETSDIR="/usr/bmicnas02/data-biwi-01/bmicdatasets-originals/Originals"
-        ## another scratch - used for the whole department, has space but very slow
-        export NET_SCRATCH="/usr/itetnas04/data-scratch-01/mleccardi/data"
-        
-        # LEGACY - not valid anymore from 2026-01-30
-        # Projects/repos/code 
-        export HCATSEGMENTDIR="/scratch_net/magnum/mleccardi/Repos/HCATSegment"
+# ~/.bashrc.d/paths-ethz
+#
+# ETH-only paths. On any machine that is not an ETH one this file defines NOTHING.
+# ETH machines are recognised by hostname: hades*, *octopus*, *bmic*, *biwi* (+ anything under *.ee.ethz.ch / *.ethz.ch).
+# (same test as in aliases-ethz)
 
-        ;; # End 
-
-    # Fallback for all other hostnames
-    *)
-        ;; # End of default case
+_ethz_host="$(hostname 2>/dev/null | tr '[:upper:]' '[:lower:]')"
+_ethz_fqdn="$(hostname -f 2>/dev/null | tr '[:upper:]' '[:lower:]')"
+_ethz_ok=0
+case "$_ethz_host" in
+    hades*|*octopus*|*bmic*|*biwi*) _ethz_ok=1 ;;
 esac
-unset $HOST
+case "$_ethz_fqdn" in
+    *.ee.ethz.ch|*.ethz.ch) _ethz_ok=1 ;;
+esac
+unset _ethz_host _ethz_fqdn
+if [ "$_ethz_ok" != 1 ]; then
+    unset _ethz_ok
+    return 0 2>/dev/null || exit 0      # sourced: stop here; executed: exit
+fi
+unset _ethz_ok
 
+# Where all links to everywhere you have access to are found
+export ALLSYM="/itet-stor/$USER/"
 
+# Important paths
+## main one to use from 2026 on. It is a scratch (no regular backups).
+export BENDERSTOR="/usr/benderstor01/data-biwi-01/mleccardi_guest/data"
+export BHOME="$BENDERSTOR/home"
+export BBACKUPS="$BENDERSTOR/backups"
+## just for original datasets
+export DATASETSDIR="/usr/bmicnas02/data-biwi-01/bmicdatasets-originals/Originals"
+## another scratch - used for the whole department, has space but very slow
+export NET_SCRATCH="/usr/itetnas04/data-scratch-01/mleccardi/data"
+
+# Removed on 2026-11-05: HCATSEGMENTDIR="/scratch_net/magnum/mleccardi/Repos/HCATSegment"
+# (legacy since 2026-01-30, "magnum" no longer exists, and nothing in the repo/configs/sbatch scripts used it).
