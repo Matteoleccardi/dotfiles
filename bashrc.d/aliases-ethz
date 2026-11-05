@@ -1,44 +1,134 @@
-# --- Cisco Secure Client (ETHZ VPN) Aliases ---
-# Check if the Cisco Secure Client directory exists before defining aliases.
+# ~/.bashrc.d/aliases-ethz
+#
+# ETH-only aliases and functions. Sourced automatically by ~/.bashrc (files WITHOUT a dot in their name).
+# On any machine that is not an ETH one this file defines NOTHING (apart from the VPN alias, which lives on the
+# laptop and is guarded by the presence of the Cisco client).
+#
+# ETH machines are recognised by hostname: hades (login node), octopus* (GPU nodes), bmic*, biwi*
+# (+ anything under *.ee.ethz.ch, which covers hades.ee.ethz.ch and the other D-ITET hosts).
+
+# ===== 1. ETH VPN (laptop side): only if the Cisco Secure Client is installed =====
 if [ -d "/opt/cisco/secureclient/" ]; then
     alias vpn-eth="/opt/cisco/secureclient/bin/vpn"
     alias vpn-eth-connect="vpn-eth connect sslvpn.ethz.ch/staff-net"
-else
-    # Optional: You can uncomment the line below if you want a message
-    : # 'no-op' command to keep the else block valid if no message is needed
 fi
 
-# starthcatsegment
-HOST=$(hostname | tr '[:upper:]' '[:lower:]')
-case "$HOST" in
-    "magnum"|*octopus*|*bmic*|*biwi*)
-        # This single pattern matches if 'octopus', 'bmic', or 'biwi' is anywhere in the hostname
-        echo "ATTENTION: barhrc.d/ethz related files are to be reworked and checked: not up to date."
-                
-        # SQLite
-        export LD_LIBRARY_PATH="/scratch/mleccardi/.local/sqlite/lib:$LD_LIBRARY_PATH"
-        
-        # SLURM at ETHZ - CVL
-        export SLURM_CONF="/home/sladmcvl/slurm/slurm.conf"
-        
-        alias ssmon="smon | GREP_COLOR='01;32' grep --color=always -E 'free|$' | GREP_COLOR='01;33' grep --color=always -E '${USER}|$'"
-        alias sssmon="smon | grep mlec"
-        
-        alias ssqueue="squeue | GREP_COLOR='01;33' grep --color=always -E 'Resources|Priority|$' | GREP_COLOR='01;32' grep --color=always -E 'mleccard|$'"
-        alias sssqueue="ssqueue | grep mlec"
-        
-        # For python pip to not clog /home/mleccardi on "magnum" machine at ETHZ - CVL
-        export TMPDIR="/scratch_net/magnum/mleccardi/.tmp"
-        
-        # Projects
-        alias starthcatsegment='cd /scratch_net/magnum/mleccardi/Repo/HCATSegment; conda activate hcatsegment'
-
-        ;; # End of case pattern 2
-
-    # Fallback for all other hostnames
-    *)
-        ;; # End of default case
+# ===== 2. Everything below exists ONLY on ETH machines =====
+_ethz_host="$(hostname 2>/dev/null | tr '[:upper:]' '[:lower:]')"
+_ethz_fqdn="$(hostname -f 2>/dev/null | tr '[:upper:]' '[:lower:]')"
+_ethz_ok=0
+case "$_ethz_host" in
+    hades*|*octopus*|*bmic*|*biwi*) _ethz_ok=1 ;;
 esac
-unset $HOST
+case "$_ethz_fqdn" in
+    *.ee.ethz.ch|*.ethz.ch) _ethz_ok=1 ;;
+esac
+unset _ethz_host _ethz_fqdn
+if [ "$_ethz_ok" != 1 ]; then
+    unset _ethz_ok
+    return 0 2>/dev/null || exit 0      # sourced: stop here; executed: exit
+fi
+unset _ethz_ok
 
+# --- project: HCATSegment -----------------------------------------------------------------------------------
+alias starthcatsegment="conda activate hcatsegment && cd ~/Repos/HCATSegment/"
 
+# --- SQLite (local build in bhome) --------------------------------------------------------------------------
+# (the old line used "~" inside quotes, which bash does NOT expand: it put a literal '~' in the path)
+if [ -d "$HOME/bhome/.local/sqlite/lib" ]; then
+    export LD_LIBRARY_PATH="$HOME/bhome/.local/sqlite/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+fi
+
+# SLURM at ETHZ - CVL: already set system-wide on hades/octopus, so only set it if it is missing
+# (from the old file; the old TMPDIR on "magnum" is gone: TMPDIR is defined elsewhere)
+if [ -z "$SLURM_CONF" ] && [ -r /home/sladmcvl/slurm/slurm.conf ]; then
+    export SLURM_CONF="/home/sladmcvl/slurm/slurm.conf"
+fi
+
+# --- Pretty monitors (blue = free / Resources, yellow = you) ------------------------------------------------
+# squeue truncates user names to 8 characters in its default format, hence ${USER:0:8}
+unalias ssmon 2>/dev/null
+ssmon() {
+    smon | USER8="${USER:0:8}" perl -pe '
+        BEGIN { $u = $ENV{USER8}; }
+        s/(free)/\e[01;34m$1\e[0m/g;
+        s/($u)/\e[01;33m$1\e[0m/g;
+        s/(username)/\e[01;33m$1\e[0m/g;
+    '
+}
+alias sssmon='ssmon | grep "${USER:0:8}"'
+
+unalias ssqueue 2>/dev/null
+ssqueue() {
+    squeue | USER8="${USER:0:8}" perl -pe '
+        BEGIN { $u = $ENV{USER8}; }
+        s/(Resources)/\e[01;34m$1\e[0m/g;
+        s/($u)/\e[01;33m$1\e[0m/g;
+    '
+}
+alias sssqueue='ssqueue | grep "${USER:0:8}"'
+
+# My running jobs with the folder that contains their "*<jobid>*.sbatch_id" marker file (searched below the current dir)
+unalias asqueue 2>/dev/null
+asqueue() {
+    local job id etime a folder
+    for job in $(squeue --me -o "%A§%M" --noheader); do
+        id="${job%%§*}"      # everything before §  (job id)
+        etime="${job#*§}"    # everything after §   (elapsed time)
+        a=$(find . -type f -name "*$id*.sbatch_id" -print -quit)
+        if [ -n "$a" ]; then
+            folder=$(basename "$(dirname "$a")")
+        else
+            folder="( NONE )"
+        fi
+        printf "%s§%s§%s\n" "$etime" "$id" "$folder"
+    done | column -t -s '§'
+}
+
+# ===== 3. Interactive Slurm sessions (hades -> octopus nodes) =====================================================
+# - The cluster's job_submit.lua IGNORES -p/--partition (it routes you by account), so no -p here.
+# - Interactive jobs are capped at 120 min (--time is in minutes).
+# - CPU-only jobs MUST pass --gres=gpu:0, otherwise the cluster silently adds a GPU.
+# - Never run GPU work on the login node (hades): start one of these first.
+# - The RAM you ask for decides how long you wait (octopus03/04 are nearly full in memory): keep the *_big ones for when needed.
+alias srun_cpu="srun --gres=gpu:0 --cpus-per-task=4 --mem=16G --time=120 --pty bash -i"
+alias srun_cpu_big="srun --gres=gpu:0 --cpus-per-task=16 --mem=128G --time=120 --pty bash -i"
+alias srun_gpu="srun --gres=gpu:a6000:1 --cpus-per-task=8 --mem=64G --time=120 --pty bash -i"
+alias srun_gpu_big="srun --gres=gpu:a6000:1 --cpus-per-task=24 --mem=180G --time=120 --pty bash -i"
+alias srun_gpu2="srun --gres=gpu:a6000:2 --cpus-per-task=16 --mem=128G --time=120 --pty bash -i"
+alias sq='squeue -u $USER -o "%.10i %.9P %.12j %.8T %.10M %.10l %.6D %R"'
+
+# Attach a new terminal to an existing job allocation (job id optional: takes your latest running job)
+srun_attach() {
+    local job_id="$1"
+    if [[ "$job_id" == "-h" || "$job_id" == "--help" ]]; then
+        echo "Usage: srun_attach [job_id]     (extra CPUs for the new shell: SRUN_ATTACH_CPUS=4 srun_attach)"
+        echo "Find your job id:  squeue -u \$USER     or, inside the job:  echo \$SLURM_JOB_ID"
+        return 0
+    fi
+    if [ -z "$job_id" ]; then
+        job_id=$(squeue -h -u "$USER" -t RUNNING -o "%A" | tail -n 1)
+        if [ -z "$job_id" ]; then
+            echo "Error: no running job found for '$USER'. Check with: squeue -u $USER"
+            return 1
+        fi
+        echo "Found running job $job_id on $(squeue -h -j "$job_id" -o %N)"
+    fi
+    echo "Connecting a new bash session to job $job_id ..."
+    srun --jobid="$job_id" --overlap -n 1 --cpus-per-task="${SRUN_ATTACH_CPUS:-2}" --pty bash -i
+}
+
+# Free GPUs per octopus node (with the 'student' account only octopus03/04 are reachable at the moment)
+gpu_free() {
+    local n
+    for n in octopus01 octopus02 octopus03 octopus04; do
+        scontrol show node "$n" 2>/dev/null | awk -v n="$n" '
+            /CfgTRES=/   { if (match($0, /gres\/gpu=[0-9]+/)) cfg = substr($0, RSTART+9, RLENGTH-9) }
+            /AllocTRES=/ { if (match($0, /gres\/gpu=[0-9]+/)) al = substr($0, RSTART+9, RLENGTH-9) }
+            END { printf "%s: %d of %d GPUs free\n", n, cfg-al, cfg }'
+    done
+}
+
+alias srun_show_options='echo "srun_cpu | srun_cpu_big | srun_gpu | srun_gpu_big | srun_gpu2 | srun_attach [jobid] | sq | gpu_free | ssmon | ssqueue | asqueue"'
+
+# Removed on purpose: check_scratch() (it created/inspected /scratch/mleccardi on every octopus node, which no longer exists).
