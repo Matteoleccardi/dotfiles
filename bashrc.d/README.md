@@ -21,7 +21,7 @@ if [ -d ~/.bashrc.d ]; then
     while IFS= read -r -d '' rc; do
         # Source the file in the CURRENT shell context
         . "$rc"
-    done < <(find ~/.bashrc.d -maxdepth 1 -type f -not -name '*.*' -print0)
+    done < <(find ~/.bashrc.d -maxdepth 1 -type f -not -name '*.*' -print0 | sort -z)
 fi
 unset rc # Clean up
 ```
