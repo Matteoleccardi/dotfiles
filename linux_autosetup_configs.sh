@@ -50,12 +50,13 @@ echo "Please install the following yourself:"
 echo "htop btop fastfetch mpv vlc dmenu"               # instead of fastfetch you can use hostnameclt
 echo "miniconda nvm"                                   # version managers for python and node.js that install in $HOME
                                                        # both required
-echo "tmux ffmpeg 7z fzf zoxide chafa yazi neovim"
+echo "tmux ffmpeg 7z fzf zoxide chafa yazi neovim yt-dlp"
 echo "watchman"                                        # https://github.com/facebook/watchman/releases/latest (by same author of WezTerm
 echo "mpd rmpc"                                        # (local, mainly) music server and client (proper server with subsonic API: navidrome)
 echo "wezterm alacritty"                               # terminal emulators, prefer wezterm (alacritty for simplicity)
 
-
+echo "npm packages (js/node)"
+echo "npm install -g yoinks"                           # yt-dlp with nice TUI on top
 
 # cleanup
 cd
