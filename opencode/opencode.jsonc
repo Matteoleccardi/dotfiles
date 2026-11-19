@@ -1,0 +1,28 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+
+  "provider": {
+    "calcifer": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "calcifer (llama.cpp)",
+      "options": {
+        "baseURL": "http://10.44.30.253:11434/v1",
+        "apiKey": "none"
+      },
+      "models": {
+        "gemma4-26b": {
+          "name": "Gemma 4 26B (fast)",
+          "limit": { "context": 32768, "output": 8192 }
+        },
+        "qwen3.6-35b": {
+          "name": "Qwen 3.6 35B (fast)",
+          "limit": { "context": 32768, "output": 8192 }
+        },
+        "muse-glimmer-30b": {
+          "name": "Muse Glimmer 30B (slow)",
+          "limit": { "context": 16384, "output": 4096 }
+        }
+      }
+    }
+  }
+}
